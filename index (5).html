@@ -1,0 +1,577 @@
+<html>
+<head>
+    <title>Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f6fa;
+        }
+        .container {
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 20px;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+        .sidebar ul li a.active {
+            color: #e74c3c;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .header .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header .search-bar input {
+            border: none;
+            outline: none;
+            margin-left: 10px;
+            font-size: 16px;
+        }
+        .header .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .header .user-info i {
+            margin-right: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+        .header .user-info img {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .header .user-info span {
+            font-size: 18px;
+        }
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            flex: 2;
+        }
+        .dashboard .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+        .dashboard .card.available-position {
+            background-color: #ffe6e6;
+        }
+        .dashboard .card.job-open {
+            background-color: #e6f2ff;
+        }
+        .dashboard .card.new-employees {
+            background-color: #f9e6ff;
+        }
+        .dashboard .card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .dashboard .card .number {
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .dashboard .card .status {
+            color: #e74c3c;
+        }
+        .dashboard .card .status.active {
+            color: #3498db;
+        }
+        .dashboard .card .status.department {
+            color: #9b59b6;
+        }
+        .dashboard .card .graph {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            color: #e74c3c;
+        }
+        .dashboard .card .graph.active {
+            color: #3498db;
+        }
+        .dashboard .card .graph.department {
+            color: #9b59b6;
+        }
+        .dashboard .card img {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            width: 100px;
+            height: 50px;
+        }
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .recent-activity {
+            background-color: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+        .recent-activity h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .recent-activity .activity {
+            margin-bottom: 20px;
+        }
+        .recent-activity .activity p {
+            margin: 0;
+        }
+        .recent-activity .activity .time {
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+        .recent-activity .activity .description {
+            font-size: 16px;
+        }
+        .recent-activity .activity .description span {
+            color: #e74c3c;
+        }
+        .recent-activity .activity .description span.active {
+            color: #3498db;
+        }
+        .recent-activity .activity .description span.department {
+            color: #9b59b6;
+        }
+        .recent-activity .see-all {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            background-color: #e67e22;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .upcoming-schedule {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .upcoming-schedule h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .upcoming-schedule .schedule {
+            margin-bottom: 20px;
+        }
+        .upcoming-schedule .schedule p {
+            margin: 0;
+        }
+        .upcoming-schedule .schedule .time {
+            color: #999;
+            font-size: 14px;
+        }
+        .upcoming-schedule .schedule .description {
+            font-size: 16px;
+        }
+        .upcoming-schedule .schedule .description span {
+            color: #e74c3c;
+        }
+        .upcoming-schedule .create-new {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #e74c3c;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .announcement {
+            background-color: #fff;
+            padding: 130px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 0px;
+            position: relative;
+        }
+        .announcement h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .announcement .announcement-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .announcement .announcement-item p {
+            margin: 0;
+        }
+        .announcement .announcement-item .time {
+            color: #999;
+            font-size: 14px;
+        }
+        .announcement .announcement-item .description {
+            font-size: 16px;
+        }
+        .announcement .see-all {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #e74c3c;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .announcement .pin-icon, .announcement .more-icon {
+            color: #999;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .right-panel {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                box-shadow: none;
+                border-bottom: 1px solid #ddd;
+            }
+            .main-content {
+                padding: 10px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header .search-bar {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .header .user-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .dashboard {
+                flex-direction: column;
+            }
+            .recent-activity, .upcoming-schedule {
+                min-width: 100%;
+            }
+        }
+  </style>
+ </head>
+ <body>
+  <div class="container">
+   <div class="sidebar">
+    <h2>
+     Vasitum
+    </h2>
+    <ul>
+     <li>
+      <a class="active" href="#">
+       <i class="fas fa-tachometer-alt">
+       </i>
+       Dashboard
+      </a>
+     </li>
+     <li>
+      <a href="#">
+       <i class="fas fa-user-friends">
+       </i>
+       Recruitment
+      </a>
+     </li>
+     <li>
+      <a href="#">
+       <i class="fas fa-calendar-alt">
+       </i>
+       Schedule
+      </a>
+     </li>
+     <li>
+      <a href="#">
+       <i class="fas fa-user">
+       </i>
+       Employee
+      </a>
+     </li>
+     <li>
+      <a href="#">
+       <i class="fas fa-building">
+       </i>
+       Department
+      </a>
+     </li>
+     <li>
+      <a href="#">
+       <i class="fas fa-cogs">
+       </i>
+       Support
+      </a>
+     </li>
+     <li>
+      <a href="#">
+       <i class="fas fa-cog">
+       </i>
+       Settings
+      </a>
+     </li>
+    </ul>
+   </div>
+   <div class="main-content">
+    <div class="header">
+     <div class="search-bar">
+      <i class="fas fa-search">
+      </i>
+      <input placeholder="Search" type="text"/>
+     </div>
+     <div class="user-info">
+      <i class="fas fa-bell">
+      </i>
+      <i class="fas fa-comment-dots">
+      </i>
+      <img alt="User profile picture" height="40" src="https://v31-qa.c3.carii.com/assets/post/images/carii_cbyewwfxlnaxc99dx_shoshinworks.png" width="40"/>
+      <span>
+        Shoshin Tech
+      </span>
+     </div>
+    </div>
+    <div class="dashboard">
+     <div class="card available-position">
+      <h3>
+       Available Position
+      </h3>
+      <div class="number">
+       24
+      </div>
+      <div class="status">
+       4 Urgently needed
+      </div>
+     </div>
+     <div class="card job-open">
+      <h3>
+       Job Open
+      </h3>
+      <div class="number">
+       10
+      </div>
+      <div class="status active">
+       4 Active hiring
+      </div>
+     </div>
+     <div class="card new-employees">
+      <h3>
+       New Employees
+      </h3>
+      <div class="number">
+       24
+      </div>
+      <div class="status department">
+       4 Department
+      </div>
+     </div>
+     <div class="card">
+      <h3>
+       Total Employees
+      </h3>
+      <div class="number">
+       216
+      </div>
+      <div class="status">
+       120 Men
+      </div>
+      <div class="status">
+       96 Women
+      </div>
+      <img alt="Graph showing total employees trend" src="https://tse4.mm.bing.net/th?id=OIP.Oh5yYXSLNBnA2BsEBnls3AHaE8&amp;pid=Api&amp;P=0&amp;h=180"/>
+     </div>
+     <div class="card">
+      <h3>
+       Talent Request
+      </h3>
+      <div class="number">
+       16
+      </div>
+      <div class="status">
+       6 Men
+      </div>
+      <div class="status">
+       10 Women
+      </div>
+      <img alt="Graph showing talent request trend" src="https://tse4.mm.bing.net/th?id=OIP.Oh5yYXSLNBnA2BsEBnls3AHaE8&amp;pid=Api&amp;P=0&amp;h=180"/>
+     </div>
+     <div class="announcement">
+      <h3>
+       Announcement
+      </h3>
+      <div class="announcement-item">
+       <div>
+        <p class="description">
+         Outing schedule for every department
+        </p>
+        <p class="time">
+         5 Minutes ago
+        </p>
+       </div>
+       <div>
+        <i class="fas fa-thumbtack pin-icon">
+        </i>
+        <i class="fas fa-ellipsis-h more-icon">
+        </i>
+       </div>
+      </div>
+      <div class="announcement-item">
+       <div>
+        <p class="description">
+         Meeting HR Department
+        </p>
+        <p class="time">
+         Yesterday, 12:30 PM
+        </p>
+       </div>
+       <div>
+        <i class="fas fa-thumbtack pin-icon">
+        </i>
+        <i class="fas fa-ellipsis-h more-icon">
+        </i>
+       </div>
+      </div>
+      <div class="announcement-item">
+       <div>
+        <p class="description">
+         IT Department need two more talents for UX/UI Designer position
+        </p>
+        <p class="time">
+         Yesterday, 09:15 AM
+        </p>
+       </div>
+       <div>
+        <i class="fas fa-thumbtack pin-icon">
+        </i>
+        <i class="fas fa-ellipsis-h more-icon">
+        </i>
+       </div>
+      </div>
+      <a class="see-all" href="#">
+       See All Announcement
+      </a>
+     </div>
+    </div>
+    <div class="right-panel">
+     <div class="recent-activity">
+      <h3>
+       Recently Activity
+      </h3>
+      <div class="activity">
+       <p class="time">
+        10:40 AM, Fri 10 Sept 2021
+       </p>
+       <p class="description">
+        You Posted a
+        <span>
+         New Job
+        </span>
+       </p>
+       <p class="description">
+        Kindly check the requirements and terms of work and make sure everything is right.
+       </p>
+       <p class="description">
+        Today you makes 12 Activity
+       </p>
+      </div>
+      <a class="see-all" href="#">
+       See All Activity
+      </a>
+     </div>
+     <div class="upcoming-schedule">
+      <h3>
+       Upcoming Schedule
+      </h3>
+      <div class="schedule">
+       <p class="time">
+        Today - 11:30 AM
+       </p>
+       <p class="description">
+        Review candidate applications
+       </p>
+      </div>
+      <div class="schedule">
+       <p class="time">
+        Today - 10:30 AM
+       </p>
+       <p class="description">
+        Interview with candidates
+       </p>
+      </div>
+      <div class="schedule">
+       <p class="time">
+        Today - 09:15 AM
+       </p>
+       <p class="description">
+        Short meeting with product designer from IT Department
+       </p>
+      </div>
+      <a class="create-new" href="#">
+       Create a New Schedule
+      </a>
+     </div>
+    </div>
+   </div>
+  </div>
+ </body>
+</html>
